@@ -7,45 +7,91 @@ RSpec.describe F1SalesCustom::Email::Parser do
   context 'when email is from website form' do
 
     context 'when is about an offer' do
-      let(:email) do
-        email = OpenStruct.new
-        email.to = [email: 'websiteform@lojateste.f1sales.org']
-        email.subject = 'Notificação de contato sobre oferta'
-        email.body = "*NOTIFICAÇÃO DE CONTATO*\n\n\n\n*Oferta:*\n\nDuster Authentique 1.6 CVT a partir de R$ 46.391,89 com faturamento imediato\n\n*Data:*\n\n11/07 13:04\n\n\n\n*Nome:*\n\nWilson\n\n*Telefone:*\n\n11949205316\n\n*E-mail:*\n\nwilcarlos2014@gmail.com\n\n*Unidade:*\n\nToriba Renault - Pinheiros\n\n*Veículo:*\n\nDuster\n\n*Origem:*\n\ngoogle\n\n*Protocolo:*\n\n77316\n\n\n\n*Mensagem:*\n\nDuster Authentique 1.6 CVT PCD a partir de R$ 46.391,89 com faturamento\nimediato\n\n\n\nATENÇÃO: Não responda este e-mail. Trata-se de uma mensagem informativa e\nautomática.\n\n\n\n\n\nAtenciosamente,\n4Life Soluções em Marketing Digital\nhttp://www.4lifesistemas.com.br\n\nNada nesta mensagem tem a intenção de ser uma assinatura eletrônica a menos\nque uma declaração específica do contrário seja incluída.\nConfidencialidade: Esta mensagem é destinada somente à pessoa endereçada.\nPode conter material confidencial e/ou privilegiado. Qualquer revisão,\ntransmissão ou outro uso ou ação tomada por confiança é proibida e pode ser\nilegal. Se você recebeu esta mensagem por engano, entre em contato com o\nremetente e apague-a de seu computador."
 
-        email
+      context 'when is for pirituba' do
+        let(:email) do
+          email = OpenStruct.new
+          email.to = [email: 'websiteform@lojateste.f1sales.org']
+          email.subject = 'Notificação de contato sobre oferta'
+          email.body = "*NOTIFICAÇÃO DE CONTATO*\n\n\n\n*Oferta:*\n\nDuster Authentique 1.6 CVT a partir de R$ 46.391,89 com faturamento imediato\n\n*Data:*\n\n11/07 13:04\n\n\n\n*Nome:*\n\nWilson\n\n*Telefone:*\n\n11949205316\n\n*E-mail:*\n\nwilcarlos2014@gmail.com\n\n*Unidade:*\n\nToriba Renault - Pirituba\n\n*Veículo:*\n\nDuster\n\n*Origem:*\n\ngoogle\n\n*Protocolo:*\n\n77316\n\n\n\n*Mensagem:*\n\nDuster Authentique 1.6 CVT PCD a partir de R$ 46.391,89 com faturamento\nimediato\n\n\n\nATENÇÃO: Não responda este e-mail. Trata-se de uma mensagem informativa e\nautomática.\n\n\n\n\n\nAtenciosamente,\n4Life Soluções em Marketing Digital\nhttp://www.4lifesistemas.com.br\n\nNada nesta mensagem tem a intenção de ser uma assinatura eletrônica a menos\nque uma declaração específica do contrário seja incluída.\nConfidencialidade: Esta mensagem é destinada somente à pessoa endereçada.\nPode conter material confidencial e/ou privilegiado. Qualquer revisão,\ntransmissão ou outro uso ou ação tomada por confiança é proibida e pode ser\nilegal. Se você recebeu esta mensagem por engano, entre em contato com o\nremetente e apague-a de seu computador."
+
+          email
+        end
+
+        let(:parsed_email) { described_class.new(email).parse }
+
+        it 'contains website form as source name' do
+          expect(parsed_email[:source][:name]).to eq(F1SalesCustom::Email::Source.all[2][:name])
+        end
+
+        it 'contains product' do
+          expect(parsed_email[:description]).to eq('google - Pirituba')
+        end
       end
 
-      let(:parsed_email) { described_class.new(email).parse }
+      context 'when is for lapa' do
+        let(:email) do
+          email = OpenStruct.new
+          email.to = [email: 'websiteform@lojateste.f1sales.org']
+          email.subject = 'Notificação de contato sobre oferta'
+          email.body = "*NOTIFICAÇÃO DE CONTATO*\n\n\n\n*Oferta:*\n\nDuster Authentique 1.6 CVT a partir de R$ 46.391,89 com faturamento imediato\n\n*Data:*\n\n11/07 13:04\n\n\n\n*Nome:*\n\nWilson\n\n*Telefone:*\n\n11949205316\n\n*E-mail:*\n\nwilcarlos2014@gmail.com\n\n*Unidade:*\n\nToriba Renault - Lapa\n\n*Veículo:*\n\nDuster\n\n*Origem:*\n\ngoogle\n\n*Protocolo:*\n\n77316\n\n\n\n*Mensagem:*\n\nDuster Authentique 1.6 CVT PCD a partir de R$ 46.391,89 com faturamento\nimediato\n\n\n\nATENÇÃO: Não responda este e-mail. Trata-se de uma mensagem informativa e\nautomática.\n\n\n\n\n\nAtenciosamente,\n4Life Soluções em Marketing Digital\nhttp://www.4lifesistemas.com.br\n\nNada nesta mensagem tem a intenção de ser uma assinatura eletrônica a menos\nque uma declaração específica do contrário seja incluída.\nConfidencialidade: Esta mensagem é destinada somente à pessoa endereçada.\nPode conter material confidencial e/ou privilegiado. Qualquer revisão,\ntransmissão ou outro uso ou ação tomada por confiança é proibida e pode ser\nilegal. Se você recebeu esta mensagem por engano, entre em contato com o\nremetente e apague-a de seu computador."
 
-      it 'contains website form as source name' do
-        expect(parsed_email[:source][:name]).to eq(F1SalesCustom::Email::Source.all.first[:name])
+          email
+        end
+
+        let(:parsed_email) { described_class.new(email).parse }
+
+        it 'contains website form as source name' do
+          expect(parsed_email[:source][:name]).to eq(F1SalesCustom::Email::Source.all[1][:name])
+        end
+
+        it 'contains product' do
+          expect(parsed_email[:description]).to eq('google - Lapa')
+        end
       end
 
-      it 'contains name' do
-        expect(parsed_email[:customer][:name]).to eq('Wilson')
-      end
+      context 'when is for pinheiros' do
 
-      it 'contains email' do
-        expect(parsed_email[:customer][:email]).to eq('wilcarlos2014@gmail.com')
-      end
+        let(:email) do
+          email = OpenStruct.new
+          email.to = [email: 'websiteform@lojateste.f1sales.org']
+          email.subject = 'Notificação de contato sobre oferta'
+          email.body = "*NOTIFICAÇÃO DE CONTATO*\n\n\n\n*Oferta:*\n\nDuster Authentique 1.6 CVT a partir de R$ 46.391,89 com faturamento imediato\n\n*Data:*\n\n11/07 13:04\n\n\n\n*Nome:*\n\nWilson\n\n*Telefone:*\n\n11949205316\n\n*E-mail:*\n\nwilcarlos2014@gmail.com\n\n*Unidade:*\n\nToriba Renault - Pinheiros\n\n*Veículo:*\n\nDuster\n\n*Origem:*\n\ngoogle\n\n*Protocolo:*\n\n77316\n\n\n\n*Mensagem:*\n\nDuster Authentique 1.6 CVT PCD a partir de R$ 46.391,89 com faturamento\nimediato\n\n\n\nATENÇÃO: Não responda este e-mail. Trata-se de uma mensagem informativa e\nautomática.\n\n\n\n\n\nAtenciosamente,\n4Life Soluções em Marketing Digital\nhttp://www.4lifesistemas.com.br\n\nNada nesta mensagem tem a intenção de ser uma assinatura eletrônica a menos\nque uma declaração específica do contrário seja incluída.\nConfidencialidade: Esta mensagem é destinada somente à pessoa endereçada.\nPode conter material confidencial e/ou privilegiado. Qualquer revisão,\ntransmissão ou outro uso ou ação tomada por confiança é proibida e pode ser\nilegal. Se você recebeu esta mensagem por engano, entre em contato com o\nremetente e apague-a de seu computador."
 
-      it 'contains phone' do
-        expect(parsed_email[:customer][:phone]).to eq('11949205316')
-      end
+          email
+        end
 
-      it 'contains product' do
-        expect(parsed_email[:product]).to eq('Duster')
-      end
+        let(:parsed_email) { described_class.new(email).parse }
 
-      it 'contains product' do
-        expect(parsed_email[:description]).to eq('google')
-      end
+        it 'contains website form as source name' do
+          expect(parsed_email[:source][:name]).to eq(F1SalesCustom::Email::Source.all.first[:name])
+        end
 
-      it 'contains message' do
-        expect(parsed_email[:message]).to eq("Duster Authentique 1.6 CVT PCD a partir de R$ 46.391,89 com faturamento\nimediato\nUnidade: Toriba Renault - Pinheiros")
-      end
+        it 'contains name' do
+          expect(parsed_email[:customer][:name]).to eq('Wilson')
+        end
 
+        it 'contains email' do
+          expect(parsed_email[:customer][:email]).to eq('wilcarlos2014@gmail.com')
+        end
+
+        it 'contains phone' do
+          expect(parsed_email[:customer][:phone]).to eq('11949205316')
+        end
+
+        it 'contains product' do
+          expect(parsed_email[:product]).to eq('Duster')
+        end
+
+        it 'contains product' do
+          expect(parsed_email[:description]).to eq('google - Pinheiros')
+        end
+
+        it 'contains message' do
+          expect(parsed_email[:message]).to eq("Duster Authentique 1.6 CVT PCD a partir de R$ 46.391,89 com faturamento\nimediato")
+        end
+
+      end
     end
 
     context 'when is about an used car' do
@@ -81,7 +127,7 @@ RSpec.describe F1SalesCustom::Email::Parser do
       end
 
       it 'contains message' do
-        expect(parsed_email[:message]).to eq("\nDeseja resposta por: Telefone\nUnidade: Toriba Renault - Pinheiros")
+        expect(parsed_email[:message]).to eq("\nDeseja resposta por: Telefone")
       end
     end
   end

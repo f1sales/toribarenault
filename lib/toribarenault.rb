@@ -11,8 +11,16 @@ module Toribarenault
       [
         {
           email_id: 'websiteform',
-          name: 'Website - Novos'
-        }
+          name: 'Website - Novos - Pinheiros'
+        },
+        {
+          email_id: 'websiteform',
+          name: 'Website - Novos - Lapa'
+        },
+        {
+          email_id: 'websiteform',
+          name: 'Website - Novos - Pirituba'
+        },
       ]
     end
   end
@@ -27,14 +35,15 @@ module Toribarenault
 
       type_of_response = parsed_email['deseja_resposta_por']
       store = parsed_email['unidade']
+      store_name = store.split(" - ").last
 
       message = parsed_email['mensagem'] || ''
       message += "\nDeseja resposta por: #{type_of_response}" if type_of_response
-      message += "\nUnidade: #{store}" if store
+      source = F1SalesCustom::Email::Source.all.map{ |s| s[:name] }.select { |n| n.include?(store_name) }.first
 
       {
         source: {
-          name: F1SalesCustom::Email::Source.all.first[:name],
+          name: source,
         },
         customer: {
           name: parsed_email['nome'],
@@ -43,7 +52,7 @@ module Toribarenault
         },
         product: product,
         message: message,
-        description: parsed_email['origem'],
+        description: "#{parsed_email['origem']} - #{store_name}",
       }
 
     end
