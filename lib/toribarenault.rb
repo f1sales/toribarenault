@@ -10,15 +10,15 @@ module Toribarenault
     def self.all
       [
         {
-          email_id: 'websiteform',
+          email_id: 'website',
           name: 'Website - Novos - Pinheiros'
         },
         {
-          email_id: 'websiteform',
+          email_id: 'website',
           name: 'Website - Novos - Lapa'
         },
         {
-          email_id: 'websiteform',
+          email_id: 'website',
           name: 'Website - Novos - Pirituba'
         },
       ]
