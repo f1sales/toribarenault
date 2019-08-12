@@ -34,7 +34,7 @@ RSpec.describe F1SalesCustom::Email::Parser do
           email = OpenStruct.new
           email.to = [email: 'websiteform@lojateste.f1sales.org']
           email.subject = 'Notificação de contato sobre oferta'
-          email.body = "*NOTIFICAÇÃO DE CONTATO*\n\n\n\n*Oferta:*\n\nDuster Authentique 1.6 CVT a partir de R$ 46.391,89 com faturamento imediato\n\n*Data:*\n\n11/07 13:04\n\n\n\n*Nome:*\n\nWilson\n\n*Telefone:*\n\n11949205316\n\n*E-mail:*\n\nwilcarlos2014@gmail.com\n\n*Unidade:*\n\nToriba Renault - Lapa\n\n*Veículo:*\n\nDuster\n\n*Origem:*\n\ngoogle\n\n*Protocolo:*\n\n77316\n\n\n\n*Mensagem:*\n\nDuster Authentique 1.6 CVT PCD a partir de R$ 46.391,89 com faturamento\nimediato\n\n\n\nATENÇÃO: Não responda este e-mail. Trata-se de uma mensagem informativa e\nautomática.\n\n\n\n\n\nAtenciosamente,\n4Life Soluções em Marketing Digital\nhttp://www.4lifesistemas.com.br\n\nNada nesta mensagem tem a intenção de ser uma assinatura eletrônica a menos\nque uma declaração específica do contrário seja incluída.\nConfidencialidade: Esta mensagem é destinada somente à pessoa endereçada.\nPode conter material confidencial e/ou privilegiado. Qualquer revisão,\ntransmissão ou outro uso ou ação tomada por confiança é proibida e pode ser\nilegal. Se você recebeu esta mensagem por engano, entre em contato com o\nremetente e apague-a de seu computador."
+          email.body = "NOTIFICAÇÃO DE CONTATO\n\nOferta: EQUIPE AZUL - Master Day Toriba Renault\nData: 12/08 13:17\n\nNome: Edmilson ribeiro\nTelefone: 11972693122\nE-mail: edmilson@gmsil.com\nUnidade: Toriba Renault - Lapa\nVeículo: Master\nOrigem: facebook\nProtocolo: 78572\n\nMensagem: EQUIPE AZUL - Me interesso em participar do Master Day Toriba\nRenault\n\nATENÇÃO: Não responda este e-mail. Trata-se de uma mensagem informativa e\nautomática.\n\n\nAtenciosamente,\n4Life Soluções em Marketing Digital\nhttp://www.4lifesistemas.com.br\n\nNada nesta mensagem tem a intenção de ser uma assinatura eletrônica a menos\nque uma declaração específica do contrário seja incluída.\nConfidencialidade: Esta mensagem é destinada somente à pessoa endereçada.\nPode conter material confidencial e/ou privilegiado. Qualquer revisão,\ntransmissão ou outro uso ou ação tomada por confiança é proibida e pode ser\nilegal. Se você recebeu esta mensagem por engano, entre em contato com o\nremetente e apague-a de seu computador."
 
           email
         end
@@ -46,8 +46,29 @@ RSpec.describe F1SalesCustom::Email::Parser do
         end
 
         it 'contains product' do
-          expect(parsed_email[:description]).to eq('google - Lapa')
+          expect(parsed_email[:description]).to eq('facebook - Lapa')
         end
+
+        it 'contains name' do
+          expect(parsed_email[:customer][:name]).to eq('Edmilson ribeiro')
+        end
+
+        it 'contains email' do
+          expect(parsed_email[:customer][:email]).to eq('edmilson@gmsil.com')
+        end
+
+        it 'contains phone' do
+          expect(parsed_email[:customer][:phone]).to eq('11972693122')
+        end
+
+        it 'contains product' do
+          expect(parsed_email[:product]).to eq('Master')
+        end
+
+        it 'contains message' do
+          expect(parsed_email[:message]).to eq("EQUIPE AZUL - Me interesso em participar do Master Day Toriba\nRenault")
+        end
+
       end
 
       context 'when is for pinheiros' do
