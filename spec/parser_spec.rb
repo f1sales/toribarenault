@@ -29,12 +29,28 @@ RSpec.describe F1SalesCustom::Email::Parser do
         end
       end
 
-      context 'when is for lapa' do
+
+      context 'when is bout master day' do
         let(:email) do
           email = OpenStruct.new
           email.to = [email: 'website@lojateste.f1sales.org']
           email.subject = 'Notificação de contato sobre oferta'
           email.body = "NOTIFICAÇÃO DE CONTATO\n\nOferta: EQUIPE AZUL - Master Day Toriba Renault\nData: 12/08 13:17\n\nNome: Edmilson ribeiro\nTelefone: 11972693122\nE-mail: edmilson@gmsil.com\nUnidade: Toriba Renault - Lapa\nVeículo: Master\nOrigem: facebook\nProtocolo: 78572\n\nMensagem: EQUIPE AZUL - Me interesso em participar do Master Day Toriba\nRenault\n\nATENÇÃO: Não responda este e-mail. Trata-se de uma mensagem informativa e\nautomática.\n\n\nAtenciosamente,\n4Life Soluções em Marketing Digital\nhttp://www.4lifesistemas.com.br\n\nNada nesta mensagem tem a intenção de ser uma assinatura eletrônica a menos\nque uma declaração específica do contrário seja incluída.\nConfidencialidade: Esta mensagem é destinada somente à pessoa endereçada.\nPode conter material confidencial e/ou privilegiado. Qualquer revisão,\ntransmissão ou outro uso ou ação tomada por confiança é proibida e pode ser\nilegal. Se você recebeu esta mensagem por engano, entre em contato com o\nremetente e apague-a de seu computador."
+
+          email
+        end
+
+        it 'returns nil' do
+          expect(described_class.new(email).parse ).to be_nil
+        end
+      end
+
+      context 'when is for lapa' do
+        let(:email) do
+          email = OpenStruct.new
+          email.to = [email: 'website@lojateste.f1sales.org']
+          email.subject = 'Notificação de contato sobre oferta'
+          email.body = "NOTIFICAÇÃO DE CONTATO\n\nOferta: Duster Authentique 1.6 CVT a partir de R$ 46.391,89 com faturamento imediato\nData: 12/08 13:17\n\nNome: Edmilson ribeiro\nTelefone: 11972693122\nE-mail: edmilson@gmsil.com\nUnidade: Toriba Renault - Lapa\nVeículo: Master\nOrigem: facebook\nProtocolo: 78572\n\nMensagem: Duster Authentique 1.6 CVT a partir de R$ 46.391,89 com faturamento imediato\n\nATENÇÃO: Não responda este e-mail. Trata-se de uma mensagem informativa e\nautomática.\n\n\nAtenciosamente,\n4Life Soluções em Marketing Digital\nhttp://www.4lifesistemas.com.br\n\nNada nesta mensagem tem a intenção de ser uma assinatura eletrônica a menos\nque uma declaração específica do contrário seja incluída.\nConfidencialidade: Esta mensagem é destinada somente à pessoa endereçada.\nPode conter material confidencial e/ou privilegiado. Qualquer revisão,\ntransmissão ou outro uso ou ação tomada por confiança é proibida e pode ser\nilegal. Se você recebeu esta mensagem por engano, entre em contato com o\nremetente e apague-a de seu computador."
 
           email
         end
@@ -66,7 +82,7 @@ RSpec.describe F1SalesCustom::Email::Parser do
         end
 
         it 'contains message' do
-          expect(parsed_email[:message]).to eq("EQUIPE AZUL - Me interesso em participar do Master Day Toriba\nRenault")
+          expect(parsed_email[:message]).to eq("Duster Authentique 1.6 CVT a partir de R$ 46.391,89 com faturamento imediato")
         end
 
       end

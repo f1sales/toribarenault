@@ -28,6 +28,7 @@ module Toribarenault
   class F1SalesCustom::Email::Parser
     def parse
       parsed_email = @email.body.colons_to_hash
+      return if (parsed_email['oferta'] || '').downcase.include?('master day')
       model = parsed_email['o_cliente_est_interessado_em_um']
 
       product = parsed_email['veculo']
