@@ -39,6 +39,9 @@ module Toribarenault
       store_name = store.split(" - ").last
 
       message = parsed_email['mensagem'] || ''
+      return if message.downcase.include?("me interesso em participar da 4ª maratona de vendas toriba renault")
+
+
       message += "\nDeseja resposta por: #{type_of_response}" if type_of_response
       source = F1SalesCustom::Email::Source.all.map{ |s| s[:name] }.select { |n| n.include?(store_name) }.first
 
