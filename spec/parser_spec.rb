@@ -40,9 +40,12 @@ RSpec.describe F1SalesCustom::Email::Parser do
           email
         end
 
-        it 'returns nil' do
-          expect(described_class.new(email).parse ).to be_nil
+        let(:parsed_email) { described_class.new(email).parse }
+
+        it 'contains website master day as source name' do
+          expect(parsed_email[:source][:name]).to eq(F1SalesCustom::Email::Source.all[3][:name])
         end
+
       end
 
       context 'when is for lapa' do

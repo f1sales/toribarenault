@@ -21,6 +21,10 @@ module Toribarenault
           email_id: 'website',
           name: 'Website - Novos - Pirituba'
         },
+        {
+          email_id: 'website',
+          name: 'Website - Master Day'
+        },
       ]
     end
   end
@@ -28,7 +32,6 @@ module Toribarenault
   class F1SalesCustom::Email::Parser
     def parse
       parsed_email = @email.body.colons_to_hash
-      return if (parsed_email['oferta'] || '').downcase.include?('master day')
       model = parsed_email['o_cliente_est_interessado_em_um']
 
       product = parsed_email['veculo']
@@ -39,11 +42,13 @@ module Toribarenault
       store_name = store.split(" - ").last
 
       message = parsed_email['mensagem'] || ''
-      return if message.downcase.include?("me interesso em participar da 4ª maratona de vendas toriba renault")
 
 
       message += "\nDeseja resposta por: #{type_of_response}" if type_of_response
       source = F1SalesCustom::Email::Source.all.map{ |s| s[:name] }.select { |n| n.include?(store_name) }.first
+
+      source = F1SalesCustom::Email::Source.all[3][:name] if message.downcase.include?("me interesso em participar da 4ª maratona de vendas toriba renault")
+      source = F1SalesCustom::Email::Source.all[3][:name] if (parsed_email['oferta'] || '').downcase.include?('master day')
 
       {
         source: {

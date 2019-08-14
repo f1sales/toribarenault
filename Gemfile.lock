@@ -15,7 +15,7 @@ GIT
 PATH
   remote: .
   specs:
-    toribarenault (0.1.3)
+    toribarenault (0.1.4)
 
 GEM
   remote: https://rubygems.org/
