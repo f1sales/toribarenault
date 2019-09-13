@@ -25,6 +25,10 @@ module Toribarenault
           email_id: 'website',
           name: 'Website - Master Day'
         },
+        {
+          email_id: 'website',
+          name: 'Website - Master'
+        },
       ]
     end
   end
@@ -48,6 +52,7 @@ module Toribarenault
       source = F1SalesCustom::Email::Source.all.map{ |s| s[:name] }.select { |n| n.include?(store_name) }.first
 
       source = F1SalesCustom::Email::Source.all[3][:name] if message.downcase.include?("me interesso em participar da 4ª maratona de vendas toriba renault")
+      source = F1SalesCustom::Email::Source.all[4][:name] if (parsed_email['veculo'] || '').downcase.include?('master')
       source = F1SalesCustom::Email::Source.all[3][:name] if (parsed_email['oferta'] || '').downcase.include?('master day')
 
       {
