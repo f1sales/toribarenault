@@ -66,6 +66,24 @@ RSpec.describe F1SalesCustom::Email::Parser do
 
       end
 
+      context 'when is for lapa usedvechicles' do
+        let(:email) do
+          email = OpenStruct.new
+          email.to = [email: 'website@lojateste.f1sales.org']
+          email.subject = 'Notificação de contato - Seção Seminovos'
+          email.body = "Notificação de contato - Seção Seminovos Nome: Marcio Klepacz \nE-mail: marcio@f1sales.com.br \nTelefone: 11981587312 \nData Contato: 21/11/2019 09:23:23 \nVeículo: RENAULT  CAPTUR \nPlaca: GAM-7572 \nAno: 2019 \nLocalização do Veículo: Nova Toriba Renault (Marginal) \nPreço: R$ 78.900,00 \nUnidade: Toriba Renault - Lapa \nOrigem: HotSite \nDeseja resposta por: E-mail \nMensagem: \nLead teste, ignorar \nAtenciosamente, \nToriba Renault Toriba Renault - Lapa"
+
+          email
+        end
+
+        let(:parsed_email) { described_class.new(email).parse }
+
+        it 'contains website form as source name' do
+          expect(parsed_email[:source][:name]).to eq(F1SalesCustom::Email::Source.all[5][:name])
+        end
+
+      end
+
       context 'when is for lapa' do
         let(:email) do
           email = OpenStruct.new
