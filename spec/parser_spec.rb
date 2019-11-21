@@ -82,6 +82,18 @@ RSpec.describe F1SalesCustom::Email::Parser do
           expect(parsed_email[:source][:name]).to eq(F1SalesCustom::Email::Source.all[5][:name])
         end
 
+        it 'contains name' do
+          expect(parsed_email[:customer][:name]).to eq('Marcio Klepacz')
+        end
+
+        it 'contains email' do
+          expect(parsed_email[:customer][:email]).to eq('marcio@f1sales.com.br')
+        end
+
+        it 'contains phone' do
+          expect(parsed_email[:customer][:phone]).to eq('11981587312')
+        end
+
       end
 
       context 'when is for lapa' do

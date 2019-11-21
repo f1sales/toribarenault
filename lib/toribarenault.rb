@@ -41,6 +41,7 @@ module Toribarenault
     def parse
       parsed_email = @email.body.colons_to_hash
       model = parsed_email['o_cliente_est_interessado_em_um']
+      parsed_name = @email.body.colons_to_hash(/(Nome|Telefone|E-mail).*?:/, false)
 
       product = parsed_email['veculo']
       product = model.split("\n").first if model
@@ -65,7 +66,7 @@ module Toribarenault
           name: source,
         },
         customer: {
-          name: parsed_email['nome'],
+          name: parsed_name['nome'],
           phone: parsed_email['telefone'],
           email: parsed_email['email']
         },
